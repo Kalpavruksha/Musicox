@@ -2,23 +2,33 @@
 
 import React, { useEffect, useRef } from "react";
 import anime from "animejs/lib/anime.es.js";
-import { playGuitar } from "@/lib/audio";
+import { playGuitar, initAudio, isAudioReady } from "@/lib/audio";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function CodropsGuitar() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Map Codrops note IDs to actual frequencies (Standard Tuning E2-E4)
-  const getFrequency = (id: string) => {
+  const [audioReady, setAudioReady] = useState(false);
+
+  // Map Codrops note IDs to Guitar String Indices (0-5)
+  const getStringIndex = (id: string) => {
     switch (id) {
-      case "19": return 82.41;  // E2
-      case "24": return 110.00; // A2
-      case "29": return 146.83; // D3
-      case "34": return 196.00; // G3
-      case "38": return 246.94; // B3
-      case "43": return 329.63; // E4
-      default: return 110.00;
+      case "19": return 0; // E2
+      case "24": return 1; // A2
+      case "29": return 2; // D3
+      case "34": return 3; // G3
+      case "38": return 4; // B3
+      case "43": return 5; // E4
+      default: return 0;
     }
+  };
+
+  const handleActivate = async () => {
+    if (!isAudioReady()) {
+      await initAudio();
+    }
+    setAudioReady(true);
   };
 
   useEffect(() => {
@@ -32,7 +42,7 @@ export default function CodropsGuitar() {
 
       const handleHover = () => {
         if (noteId) {
-          playGuitar(getFrequency(noteId));
+          playGuitar(getStringIndex(noteId));
         }
         
         anime.remove(parentNode);
@@ -70,9 +80,18 @@ export default function CodropsGuitar() {
           <p className="text-lg mb-8 max-w-md mx-auto md:mx-0" style={{ color: "#333", fontFamily: "'Inter', sans-serif" }}>
             Hover or tap the strings to play. Experience the resonance of standard tuning directly in your browser.
           </p>
+          
+          {!audioReady && (
+            <button 
+              onClick={handleActivate}
+              className="px-6 py-3 bg-[#2E2E2E] text-[#E2D5C3] rounded-full font-semibold hover:bg-black transition-colors"
+            >
+              Click to activate audio
+            </button>
+          )}
         </motion.div>
 
-        <div className="flex-1 w-full max-w-2xl" ref={containerRef}>
+        <div className="flex-1 w-full max-w-2xl" ref={containerRef} onPointerDown={handleActivate}>
           <svg className="w-full h-auto cursor-crosshair drop-shadow-xl" preserveAspectRatio="xMinYMax meet" viewBox="0 0 1440 780">
             <path fill="#2E2E2E" d="M-130.9,612.4c0-280,106.5-487.9,356.5-487.9c250,0,347.8,167.6,428.3,167.6c80.4,0,223.9-72.1,350-17
             c126.1,55.2,132.6,275.8,132.6,333.1c0,57.3-6.5,277.9-132.6,333.1c-126.1,55.2-269.6-17-350-17c-80.4,0-178.3,167.6-428.3,167.6
