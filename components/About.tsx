@@ -77,6 +77,23 @@ export default function About() {
           </p>
         </motion.div>
 
+        {/* ── Quote ────────────────────────────────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="max-w-3xl mx-auto mb-16 text-center"
+        >
+          <blockquote className="relative p-8 rounded-2xl" style={{ background: "rgba(124, 58, 237, 0.04)", border: "1px solid rgba(124, 58, 237, 0.1)" }}>
+            <p className="text-xl md:text-2xl italic font-medium leading-relaxed mb-4" style={{ fontFamily: "'Playfair Display', serif", color: "#1a1a2e" }}>
+              "Where words fail, music speaks."
+            </p>
+            <footer className="text-sm font-semibold tracking-widest uppercase" style={{ color: "#7C3AED", fontFamily: "'Inter', sans-serif" }}>
+              — Hans Christian Andersen
+            </footer>
+          </blockquote>
+        </motion.div>
         {/* ── Stats ────────────────────────────────────────────────────────── */}
         <motion.div
           variants={containerVariants}
