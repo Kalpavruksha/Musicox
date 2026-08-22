@@ -95,7 +95,7 @@ export default function Contact() {
               {
                 icon: <MapPin size={18} />,
                 title: "Pacific Pride Apartment",
-                sub:   "First Floor, Last shop from the front facing",
+                sub:   "First Floor, Last shop from the front facing, Hubli 580020",
               },
               {
                 icon: <Phone size={18} />,

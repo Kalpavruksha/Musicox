@@ -127,8 +127,8 @@ export default function Footer() {
                   Address
                 </div>
                 <div className="text-sm" style={{ color: "var(--text-secondary)", fontFamily: "'Inter', sans-serif" }}>
-                  Pacific Pride Apartment, First Floor
-                  {/* PLACEHOLDER — replace with actual address */}
+                  Pacific Pride Apartment, First Floor<br />
+                  Hubli 580020
                 </div>
               </div>
               <div>
