@@ -47,7 +47,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Image
-              src="/logo.png"
+              src="/logo-new.png"
               alt="Musicox Logo"
               width={130}
               height={44}
