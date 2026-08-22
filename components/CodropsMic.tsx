@@ -115,7 +115,8 @@ export default function CodropsMic() {
   return (
     <section 
       ref={containerRef}
-      className="relative w-full overflow-hidden bg-[#111] py-32 min-h-[500px] flex items-center justify-center cursor-crosshair touch-none"
+      className="relative w-full overflow-hidden bg-[#111] py-32 min-h-[500px] flex items-center justify-center cursor-crosshair touch-none bg-cover bg-center"
+      style={{ backgroundImage: "url('/images/mic.jpg')" }}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerUp}
