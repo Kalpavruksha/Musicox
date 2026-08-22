@@ -128,9 +128,7 @@ export default function Contact() {
                 title: <span style={{ color: "var(--text-primary)" }}>Class Hours (IST)</span>,
                 sub: (
                   <>
-                    Mon–Sat: 9:00 AM – 8:00 PM
-                    <br />
-                    Sun: 10:00 AM – 6:00 PM
+                    Mon–Fri: 5:00 PM – 6:00 PM
                   </>
                 ),
               },
