@@ -84,11 +84,14 @@ export default function Contact() {
               Find Us
             </div>
             <h3
-              className="text-3xl font-bold mb-8"
+              className="text-4xl font-bold mb-2"
               style={{ fontFamily: "'Playfair Display', serif", color: "var(--text-primary)" }}
             >
-              Visit Our School
+              MUSICOX
             </h3>
+            <p className="text-lg mb-8" style={{ color: "var(--text-secondary)", fontFamily: "'Inter', sans-serif" }}>
+              Music School & Academy
+            </p>
 
             {/* Info items */}
             {[

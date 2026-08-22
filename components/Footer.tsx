@@ -49,9 +49,9 @@ export default function Footer() {
             <Image
               src="/logo-new.svg"
               alt="Musicox Logo"
-              width={130}
-              height={44}
-              className="h-10 w-auto mb-4"
+              width={180}
+              height={60}
+              className="h-12 w-auto mb-4"
             />
             <p
               className="text-sm leading-relaxed mb-4"

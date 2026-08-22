@@ -191,15 +191,7 @@ export default function Courses() {
         </div>
 
         {/* Bottom note */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.6 }}
-          className="text-center text-xs mt-10"
-          style={{ color: "var(--text-muted)", fontFamily: "'Inter', sans-serif" }}
-        >
-          All prices are PLACEHOLDER — contact us for the latest batch fees. First trial class is always free.
-        </motion.p>
+
       </div>
     </section>
   );

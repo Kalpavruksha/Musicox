@@ -72,7 +72,7 @@ export default function About() {
             className="mt-5 max-w-2xl mx-auto text-base leading-relaxed"
             style={{ color: "#6B7280", fontFamily: "'Inter', sans-serif" }}
           >
-            At Musicox, we believe music transforms lives. Founded with a simple mission — to make
+            At <strong>Musicox</strong>, we believe music transforms lives. Founded with a simple mission — to make
             professional music education accessible, joyful, and deeply personal for every student.
           </p>
         </motion.div>

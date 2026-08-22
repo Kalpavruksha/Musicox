@@ -122,10 +122,10 @@ export default function Navbar() {
             <Image
               src="/logo-new.svg"
               alt="Musicox Logo"
-              width={130}
-              height={44}
+              width={180}
+              height={60}
               priority
-              className="h-10 w-auto group-hover:opacity-90 transition-opacity duration-200"
+              className="h-12 w-auto group-hover:opacity-90 transition-opacity duration-200"
             />
           </a>
 
