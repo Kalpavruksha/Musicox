@@ -244,7 +244,7 @@ export default function Hero() {
                   className="text-xs font-medium tracking-widest uppercase"
                   style={{ color: "var(--purple-light)", fontFamily: "'Inter', sans-serif" }}
                 >
-                  Music School
+                  MUSICOX ACADEMY
                 </span>
               </motion.div>
 
@@ -291,7 +291,7 @@ export default function Hero() {
                   maxWidth: "520px",
                 }}
               >
-                Professional music training for all ages — guitar, piano, drums, violin, and more.
+                Welcome to Musicox. Professional music training for all ages — guitar, piano, drums, violin, and more.
                 Learn from expert instructors in a joyful, structured environment.
               </motion.p>
 
