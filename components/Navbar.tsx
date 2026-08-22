@@ -120,7 +120,7 @@ export default function Navbar() {
             aria-label="Musicox — Go to homepage"
           >
             <Image
-              src="/logo-new.png"
+              src="/logo-new.svg"
               alt="Musicox Logo"
               width={130}
               height={44}
