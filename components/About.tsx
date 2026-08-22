@@ -292,30 +292,7 @@ export default function About() {
             </motion.div>
 
             {/* Quote box */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="mt-8 rounded-2xl p-6"
-              style={{
-                background: "linear-gradient(135deg, rgba(124,58,237,0.08), rgba(236,72,153,0.06))",
-                border: "1px solid rgba(124,58,237,0.15)",
-              }}
-            >
-              <blockquote
-                className="text-base italic leading-relaxed mb-3"
-                style={{ color: "#4B5563", fontFamily: "'Playfair Display', serif" }}
-              >
-                &ldquo;[Add a short inspiring quote from your teaching philosophy — something that
-                resonates with your students.]&rdquo;
-              </blockquote>
-              <cite
-                className="text-xs font-medium not-italic"
-                style={{ color: "#7C3AED", fontFamily: "'Inter', sans-serif" }}
-              >
-                — [Teacher Name], Founder
-              </cite>
-            </motion.div>
+
           </motion.div>
         </div>
       </div>
