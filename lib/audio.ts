@@ -163,6 +163,18 @@ export function playGuitar(stringIndex: number): void {
   } catch { /* silent */ }
 }
 
+/**
+ * Play a specific note name through the guitar sampler.
+ * Use this for chords where you need exact fretted pitches.
+ * @param note  e.g. "C3", "E3", "G3", "B3"
+ */
+export function playGuitarNote(note: string): void {
+  if (!_ready || !guitar || !Tone) return;
+  try {
+    (guitar as ToneType.Sampler).triggerAttackRelease(note, "2n", Tone.now());
+  } catch { /* silent */ }
+}
+
 // ─── 🎹 Piano ─────────────────────────────────────────────────────────────────
 
 /**

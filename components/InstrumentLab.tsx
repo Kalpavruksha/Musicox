@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { playGuitar, playPiano, playDrum, initAudio, isAudioReady, isAudioLoading, getGuitarNote } from "@/lib/audio";
+import { playGuitar, playPiano, playDrum, initAudio, isAudioReady, isAudioLoading, getGuitarNote, playGuitarNote } from "@/lib/audio";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -69,11 +69,29 @@ const DEFAULT_SEQ = {
 };
 
 // ─── Chord presets ────────────────────────────────────────────────────────────
-const CHORDS: { name: string; strings: number[] }[] = [
-  { name: "C Major", strings: [0, 1, 2, 3, 4, 5] },
-  { name: "G Major", strings: [5, 4, 3, 2, 1, 0] },
-  { name: "Am",      strings: [1, 2, 3, 4, 5] },
-  { name: "Em",      strings: [0, 1, 2, 3, 4, 5] },
+// Each chord lists the actual pitched notes to play (low → high string order)
+// These are standard guitar voicings in open position:
+const CHORDS: { name: string; notes: string[]; stringIdxs: number[] }[] = [
+  {
+    name: "C Major",
+    notes:      ["E2", "C3", "E3", "G3", "C4", "E4"],  // x32010 voicing
+    stringIdxs: [0,    1,    2,    3,    4,    5],
+  },
+  {
+    name: "G Major",
+    notes:      ["G2", "B2", "D3", "G3", "B3", "G4"],  // 320003 voicing
+    stringIdxs: [0,    1,    2,    3,    4,    5],
+  },
+  {
+    name: "Am",
+    notes:      ["A2", "E3", "A3", "C4", "E4"],        // x02210 — skip low E
+    stringIdxs: [1,    2,    3,    4,    5],
+  },
+  {
+    name: "Em",
+    notes:      ["E2", "B2", "E3", "G3", "B3", "E4"],  // 022000 open
+    stringIdxs: [0,    1,    2,    3,    4,    5],
+  },
 ];
 
 // ─── Audio Helpers ────────────────────────────────────────────────────────────
@@ -138,17 +156,19 @@ function GuitarPanel({ onFirstPlay }: { onFirstPlay: () => void }) {
   );
 
   const playChord = useCallback(
-    async (strings: number[], name: string) => {
+    async (chord: { name: string; notes: string[]; stringIdxs: number[] }) => {
       if (!hasInit.current) {
         await ensureAudio();
         hasInit.current = true;
         onFirstPlay();
       }
-      setBadgeNote(name);
-      strings.forEach((idx, i) => {
+      setBadgeNote(chord.name);
+      chord.notes.forEach((note, i) => {
         setTimeout(() => {
-          tryPlayGuitar(idx);
-          setVibratingIdx(idx);
+          playGuitarNote(note);
+          // Animate the corresponding string visually
+          const strIdx = chord.stringIdxs[i] ?? 0;
+          setVibratingIdx(strIdx);
           setTimeout(() => setVibratingIdx(null), 500);
         }, i * 80);
       });
@@ -258,7 +278,7 @@ function GuitarPanel({ onFirstPlay }: { onFirstPlay: () => void }) {
           <button
             key={chord.name}
             id={`chord-${chord.name.replace(/\s/g, "-").toLowerCase()}`}
-            onClick={() => playChord(chord.strings, chord.name)}
+            onClick={() => playChord(chord)}
             className="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-150 hover:text-white"
             style={{
               background: "rgba(124,58,237,0.15)",
