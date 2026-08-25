@@ -165,10 +165,10 @@ export default function Footer() {
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs" style={{ color: "var(--text-muted)", fontFamily: "'Inter', sans-serif" }}>
-            © 2025 Musicox. All rights reserved.
+            © 2025 Musicox Academy. All rights reserved.
           </p>
           <p className="text-xs" style={{ color: "var(--text-muted)", fontFamily: "'Inter', sans-serif" }}>
-            Made by beshu
+            Empowering musicians in Hubli since 2015
           </p>
           <div className="flex gap-5">
             <a href="#" className="text-xs transition-colors hover:opacity-80" style={{ color: "var(--text-muted)", fontFamily: "'Inter', sans-serif" }}>
