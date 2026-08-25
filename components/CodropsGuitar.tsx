@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import anime from "animejs/lib/anime.es.js";
-import { initAudio, isAudioReady } from "@/lib/audio";
+import { initAudio, isAudioReady, playGuitar } from "@/lib/audio";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -10,48 +10,24 @@ export default function CodropsGuitar() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [audioReady, setAudioReady] = useState(false);
-  const samplerRef = useRef<any>(null);
 
-  // Map Codrops note IDs to Note Names (Standard Tuning E2-E4)
-  const getNoteName = (id: string) => {
+  // Map Codrops note IDs to string indices (0=E2 … 5=E4)
+  const getNoteIndex = (id: string): number => {
     switch (id) {
-      case "19": return "E2";
-      case "24": return "A2";
-      case "29": return "D3";
-      case "34": return "G3";
-      case "38": return "B3";
-      case "43": return "E4";
-      default: return "E2";
+      case "19": return 0; // E2
+      case "24": return 1; // A2
+      case "29": return 2; // D3
+      case "34": return 3; // G3
+      case "38": return 4; // B3
+      case "43": return 5; // E4
+      default: return 0;
     }
   };
 
   const handleActivate = async () => {
     if (!isAudioReady()) {
-      await initAudio(); // Start global audio context
+      await initAudio(); // loads the shared acoustic-nylon sampler + all synths
     }
-    
-    if (!samplerRef.current) {
-      const Tone = await import("tone");
-      if (Tone.getContext().state !== "running") {
-        await Tone.start();
-      }
-      
-      try {
-        const response = await fetch("/sounds/guitar.json");
-        const soundfont = await response.json();
-        
-        const sampler = new Tone.Sampler({
-          urls: soundfont,
-          release: 1,
-        }).toDestination();
-        
-        await Tone.loaded();
-        samplerRef.current = sampler;
-      } catch (err) {
-        console.error("Failed to load guitar soundfont", err);
-      }
-    }
-    
     setAudioReady(true);
   };
 
@@ -65,8 +41,8 @@ export default function CodropsGuitar() {
       const noteId = hoverArea.getAttribute("data-note");
 
       const handleHover = () => {
-        if (noteId && samplerRef.current) {
-          samplerRef.current.triggerAttackRelease(getNoteName(noteId), "2n");
+        if (noteId) {
+          playGuitar(getNoteIndex(noteId));
         }
         
         anime.remove(parentNode);

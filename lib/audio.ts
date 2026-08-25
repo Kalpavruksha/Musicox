@@ -21,7 +21,7 @@ let _ready   = false;  // true once all samples loaded + synths created
 let _loading = false;  // true while initAudio() is in progress (prevents double-init)
 
 // Instruments
-let guitar: ToneType.PluckSynth | null = null;
+let guitar: ToneType.Sampler | null = null;
 let piano:  ToneType.Sampler    | null = null;
 let kick:   ToneType.MembraneSynth | null = null;
 let snare:  ToneType.NoiseSynth    | null = null;
@@ -32,7 +32,7 @@ let tom:    ToneType.MembraneSynth | null = null;
 let limiter: ToneType.Limiter | null = null;
 let reverb:  ToneType.Reverb  | null = null;
 
-// Guitar string tuning — index 0 = low E2, 5 = high E4
+// Guitar string note names — index 0 = low E2, 5 = high E4
 const GUITAR_NOTES = ["E2", "A2", "D3", "G3", "B3", "E4"] as const;
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
@@ -64,12 +64,23 @@ export async function initAudio(): Promise<void> {
     limiter.connect(reverb);
     reverb.toDestination();
 
-    // ── 🎸 Guitar — PluckSynth (Karplus-Strong, zero CDN needed) ──────
-    guitar = new T.PluckSynth({
-      attackNoise: 2,      // pick attack harshness (1–20)
-      dampening:   4000,   // string brightness cutoff Hz
-      resonance:   0.98,   // string sustain 0–1
-    }).connect(limiter);
+    // ── 🎸 Guitar — Acoustic Nylon Sampler (from /sounds/guitar.json) ──
+    try {
+      const res = await fetch("/sounds/guitar.json");
+      const guitarSoundfont = await res.json();
+      guitar = new T.Sampler({
+        urls: guitarSoundfont,
+        release: 1,
+      }).connect(limiter);
+    } catch (e) {
+      // Fallback to PluckSynth if soundfont fails to load
+      console.warn("[Musicox] Guitar soundfont load failed, using PluckSynth fallback", e);
+      guitar = new (T as any).PluckSynth({
+        attackNoise: 2,
+        dampening:   4000,
+        resonance:   0.98,
+      }).connect(limiter);
+    }
 
     // ── 🥁 Kick — MembraneSynth (deep pitch-drop thump) ───────────────
     kick = new T.MembraneSynth({
@@ -141,13 +152,14 @@ export async function initAudio(): Promise<void> {
 // ─── 🎸 Guitar ────────────────────────────────────────────────────────────────
 
 /**
- * Pluck a guitar string.
+ * Pluck a guitar string using the acoustic nylon sampler.
  * @param stringIndex  0 = low E2 … 5 = high E4
  */
 export function playGuitar(stringIndex: number): void {
   if (!_ready || !guitar || !Tone) return;
   try {
-    guitar.triggerAttack(GUITAR_NOTES[stringIndex], Tone.now());
+    const note = GUITAR_NOTES[stringIndex] ?? "E2";
+    (guitar as ToneType.Sampler).triggerAttackRelease(note, "2n", Tone.now());
   } catch { /* silent */ }
 }
 
