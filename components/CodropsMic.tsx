@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
@@ -10,13 +10,9 @@ export default function CodropsMic() {
   const pannerNodeRef  = useRef<StereoPannerNode | null>(null);
   const bufferRef      = useRef<AudioBuffer | null>(null);
   const sourceRef      = useRef<AudioBufferSourceNode | null>(null);
-  const isDownRef      = useRef(false);
-  const rafRef         = useRef<number | null>(null);
-
-  const [isReady, setIsReady]       = useState(false);
-  const [panLabel, setPanLabel]     = useState("CENTER");
-  const [panValue, setPanValue]     = useState(0);   // -1 left … 0 center … 1 right
-  const [gainValue, setGainValue]   = useState(0);   // 0-1
+  const [isReady, setIsReady]     = useState(false);
+  const isDownRef                  = useRef(false);
+  const rafRef                     = useRef<number | null>(null);
 
   // ── Setup audio graph: source → gain → panner → destination ───────────────
   useEffect(() => {
@@ -100,12 +96,6 @@ export default function CodropsMic() {
       gainNodeRef.current.gain.setTargetAtTime(gain, audioCtxRef.current.currentTime, 0.02);
     }
 
-    setPanValue(pan);
-    setGainValue(gain);
-
-    if (pan < -0.15)       setPanLabel("◀ LEFT");
-    else if (pan > 0.15)   setPanLabel("RIGHT ▶");
-    else                   setPanLabel("● CENTER");
   }, []);
 
   // ── Pointer handlers ──────────────────────────────────────────────────────
@@ -152,69 +142,12 @@ export default function CodropsMic() {
         viewport={{ once: true }}
         className="relative z-10 text-center pointer-events-none w-full max-w-md mx-auto px-6"
       >
-        <h2 className="text-5xl md:text-7xl font-bold mb-3" style={{ fontFamily: "'Playfair Display', serif", color: "#FFF" }}>
+        <h2 className="text-5xl md:text-7xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif", color: "#FFF" }}>
           Voice
         </h2>
-        <p className="text-base mb-8" style={{ color: "#AAA", fontFamily: "'Inter', sans-serif" }}>
-          Hold &amp; drag — position controls <strong style={{ color: "#fff" }}>stereo pan</strong> (left/right) and <strong style={{ color: "#fff" }}>volume</strong> (centre = loudest).
+        <p className="text-lg md:text-xl max-w-md mx-auto" style={{ color: "#AAA", fontFamily: "'Inter', sans-serif" }}>
+          Click and drag around the center to manipulate the microphone feedback.
         </p>
-
-        {/* Stereo pan indicator */}
-        {isDownRef.current || gainValue > 0 ? (
-          <div className="flex flex-col items-center gap-3">
-            {/* Pan bar */}
-            <div className="w-full flex items-center gap-2">
-              <span className="text-xs w-6 text-right" style={{ color: "#888", fontFamily: "'Inter', sans-serif" }}>L</span>
-              <div className="flex-1 relative h-2 rounded-full" style={{ background: "rgba(255,255,255,0.15)" }}>
-                {/* Track fill from center to dot */}
-                <div
-                  className="absolute top-0 h-2 rounded-full transition-none"
-                  style={{
-                    left:  panValue < 0 ? `${panPercent}%` : "50%",
-                    right: panValue > 0 ? `${100 - panPercent}%` : "50%",
-                    background: "linear-gradient(90deg, #a855f7, #ec4899)",
-                  }}
-                />
-                {/* Dot */}
-                <div
-                  className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-white shadow-lg transition-none"
-                  style={{
-                    left: `calc(${panPercent}% - 8px)`,
-                    background: "linear-gradient(135deg, #a855f7, #ec4899)",
-                  }}
-                />
-              </div>
-              <span className="text-xs w-6" style={{ color: "#888", fontFamily: "'Inter', sans-serif" }}>R</span>
-            </div>
-
-            {/* Label + volume */}
-            <div className="flex items-center gap-4">
-              <span
-                className="text-sm font-bold tracking-widest px-3 py-1 rounded-full"
-                style={{
-                  background: "rgba(168,85,247,0.25)",
-                  border: "1px solid rgba(168,85,247,0.5)",
-                  color: "#d8b4fe",
-                  fontFamily: "'Inter', sans-serif",
-                }}
-              >
-                {panLabel}
-              </span>
-              <span className="text-xs" style={{ color: "#888", fontFamily: "'Inter', sans-serif" }}>
-                Vol {Math.round(volPercent)}%
-              </span>
-            </div>
-          </div>
-        ) : (
-          <div className="opacity-50">
-            <div className="flex justify-between text-xs mb-1" style={{ color: "#888", fontFamily: "'Inter', sans-serif" }}>
-              <span>◀ LEFT</span>
-              <span>CENTER ●</span>
-              <span>RIGHT ▶</span>
-            </div>
-            <div className="w-full h-px" style={{ background: "rgba(255,255,255,0.2)" }} />
-          </div>
-        )}
       </motion.div>
     </section>
   );
