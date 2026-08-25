@@ -69,7 +69,6 @@ export default function CodropsMic() {
     if (gainNodeRef.current && audioCtxRef.current) {
       gainNodeRef.current.gain.setTargetAtTime(0, audioCtxRef.current.currentTime, 0.05);
     }
-    setGainValue(0);
   }, []);
 
   // ── Calculate pan + gain from pointer position ────────────────────────────
@@ -119,8 +118,6 @@ export default function CodropsMic() {
   const handlePointerUp = () => { stopSound(); };
 
   // ── Helpers for visual feedback ───────────────────────────────────────────
-  const panPercent = ((panValue + 1) / 2) * 100;  // 0-100% for the slider dot
-  const volPercent = gainValue * 100;
 
   return (
     <section
