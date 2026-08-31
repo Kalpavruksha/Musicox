@@ -9,7 +9,7 @@ import ParallaxDivider from "@/components/ParallaxDivider";
 import QuoteWave       from "@/components/QuoteWave";
 import CodropsGuitar   from "@/components/CodropsGuitar";
 import CodropsMic      from "@/components/CodropsMic";
-  
+   
 export default function Home() {
   return (
     <main className="min-h-screen" style={{ backgroundColor: "#0D0D1A" }}>
